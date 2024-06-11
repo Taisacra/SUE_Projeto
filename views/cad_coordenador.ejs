@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRUD Coordenador</title>
+  </head>
+  <body>
+    <h1>CRUD de Coordenador</h1>
+
+    <!-- Formulário para adicionar ou editar associação entre curso e disciplina -->
+    <form action="/editar_Coordenador" method="POST">
+      <!-- Select para escolher o curso -->
+      <label for="usuario">Usuário:</label>
+      <select id="usuario" name="usuario" required>
+        <% usuarios.forEach(function(usuario) { %>
+        <option value="<%= usuario.idUsuario %>" data-id="<%= usuario.idUsuario %>">
+          <%= usuario.nome_usuario %>
+        </option>
+        <% }); %>
+      </select>
+      <br />
+
+    
+
+      <!-- Botões para confirmar a inclusão ou edição -->
+      <button type="submit" name="action" value="alterar">Alterar</button>
+      <button type="submit" name="action" value="incluir">Incluir</button>
+      <input type="hidden" id="idCoordenador" name="idCoordenador"/>
+    </form>
+
+    <!-- Tabela para exibir as associações entre curso e disciplina -->
+    <h2>Associações entre Usuario e Coordenador</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Usuário</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% usuarioCoordenadores.forEach(function(usuarioCoordenador) { %>
+        <tr>
+          <td><%= usuarioCoordenadores.nome_usuario %></td>
+          <td>
+            <!-- Botão para editar associação -->
+            <button
+              onclick="preencherFormulario('<%= usuarioCoordenador.nome_usuario %>',  '<%= usuarioCoordenador.idCoordenador %>')"
+            >
+              Editar
+            </button>
+            <!-- Formulário para excluir associação -->
+            <form
+              action="/excluir_coordenador/<%= usuarioCoordenador.idCoordenador %>"
+              method="POST"
+            >
+              <button type="submit">Excluir</button>
+            </form>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <script>
+      // Função para preencher os campos do formulário ao clicar em editar
+      function preencherFormulario(usuario,idCoordenador) {
+        document.getElementById("usuario").value = nome_usuario;
+        document.getElementById("idCoordenador").value = idCoordenador;
+      }
+    </script>
+  </body>
+</html>
