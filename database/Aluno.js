@@ -15,7 +15,7 @@ Aluno.init(
           type: DataTypes.STRING(45),
           allowNull: false,
         },
-        Usuario_idUsuario: {
+        idUsuario: {
           type: DataTypes.INTEGER,
           allowNull: false,
           references:{

@@ -1,17 +1,17 @@
 const { DataTypes, Model } = require("Sequelize");
 const sequelize = require("./Database"); // Arquivo de configuração da conexão com o banco de dados
 
-class UsuarioCoordenador extends Model {}
+class UsuarioResponsavelFinanceiro extends Model {}
 
-UsuarioCoordenador.init(
+UsuarioResponsavelFinanceiro.init(
     {
-        id_Coordenador: {
+        id_responsavel_financeiro: {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
             references:{
-                model: "Coordenador",
-                key: "id_Coordenador",
+                model: "Responsavel_financeiro",
+                key: "id_responsavel_financeiro",
               },
           },
         idUsuario: {
@@ -31,15 +31,15 @@ UsuarioCoordenador.init(
     },
       {
         sequelize,
-        modelName: "UsuarioCoordenador",
-        tableName: "usuariocoordenador",
+        modelName: "UsuarioResponsavelFinanceiro",
+        tableName: "usuarioresponsavelfinanceiro",
         timestamps: false,
       }
     );
     
-      async function sincronizarUsuarioCoordenador() {
+      async function sincronizarUsuarioResponsavelFinanceiro() {
         try {
-          await UsuarioCoordenador.sync({ force: false });
+          await UsuarioResponsavelFinanceiro.sync({ force: false });
         } catch (error) {
           console.error("Erro ao sincronizar a tabela: ", error);
         } finally {
@@ -48,5 +48,5 @@ UsuarioCoordenador.init(
         }
       }
       
-      UsuarioCoordenador.sync({ force: false }).then(() => {});
-      module.exports = UsuarioCoordenador;
+      UsuarioResponsavelFinanceiro.sync({ force: false }).then(() => {});
+      module.exports = UsuarioResponsavelFinanceiro;

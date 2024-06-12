@@ -21,19 +21,14 @@ const Turma = require("./database/Turma");
 const TurmaAluno = require("./database/TurmaAluno");
 const TurmaDisciplina = require("./database/TurmaDisciplina");
 const UsuarioCoordenador = require("./database/UsuarioCoordenador");
-
-
+const UsuarioResponsavelFinanceiro = require("./database/UsuarioResponsavelFinanceiro");
+const UsuarioAluno = require("./database/UsuarioAluno");
+const UsuarioProfessor = require("./database/UsuarioProfessor");
 
 
 /* const ProfessorDisciplina = require("./database/ProfessorDisciplina");
 
 ProfessorDisciplina.sincronizarProfessorDisciplina; */
-
-
-
-
-
-
 
 
 /* Aluno.sincronizarAluno;
@@ -48,10 +43,10 @@ Turma.sincronizarTurma;
 TurmaAluno.sincronizarTurmaAluno;
 TurmaDisciplina.sincronizarTurmaDisciplina;
 UsuarioCoordenador.sincronizarUsuarioCoordenador;
-
+UsuarioResponsavelFinanceiro.sincronizarUsuarioResponsavelFinanceiro;
+UsuarioAluno.sincronizarUsuarioAluno;
+UsuarioProfessor.sincronizarUsuarioProfessor;
 */
-
-
 
 
 // ROTA PARA CRUD DE USUÁRIO
@@ -194,53 +189,58 @@ app.get("/usuario", (req, res) => {
 
 
 
-  // ROTA PARA CRUD DE COORDENADOR
-app.get("/coordenador", async (req, res) => {
-    try {
-      const usuarios = await UsuarioCoordenador.findAll();
-      res.render("cad_coordenador", {
-        usuarioCoordenador,
-      });
-    } catch (error) {
-      console.error("Erro ao buscar associações de usuario a tabela de cordenador:", error);
-      res.status(500).send("Erro ao buscar associações de usuario a tabela de cordenador");
-    }
-  });
+ // ROTA PARA CRUD DE COORDENADOR
+ app.get("/coordenador", async (req, res) => {
+  try {
+    const usuarios = await Usuario.findAll();
+    const coordenadores = await Coordenador.findAll();
+    const usuariocoordenadores = await UsuarioCoordenador.findAll();
+    res.render("cad_coordenador", {
+      coordenadores,
+      usuariocoordenadores : usuariocoordenadores,
+      usuarios,
+    });
+  } catch (error) {
+    console.error("Erro ao buscar associações de usuario a tabela de cordenador:", error);
+    res.status(500).send("Erro ao buscar associações de usuario a tabela de cordenador");
+  }
+});
 
-  app.post("/editar_Coordenador", async (req, res) => {
-    try {
-      const { usuario, action } = req.body;
-  
-      if (action === "incluir") {
-        await Coordenador.create({
-          Usuario_idUsuario: usuario,
-        });
-        res.redirect("/coordenador");
-      } else if (action === "alterar") {
-        const id_Coordenador = req.body.idCoordenador;
-        await Coordenador.update(
-          { Usuario_idUsuario: usuario },
-          { where: { idCoordenador: id_Coordenador } }
-        );
-        res.redirect("/coordenador");
-      } else {
-        res.status(400).send("Ação inválida.");
-      }
-    } catch (error) {
-      console.error(
-        "Erro ao inserir ou editar associação entre usuario e coordenador:",
-        error
+app.post("/editar_Coordenador", async (req, res) => {
+  try {
+    const { usuario, action } = req.body;
+
+    if (action === "incluir") {
+      await Coordenador.create({
+        idUsuario: usuario,
+      });
+      res.redirect("/coordenador");
+
+    } else if (action === "alterar") {
+      const id_Coordenador = req.body.id_Coordenador;
+      await Coordenador.update(
+        { idUsuario: usuario },
+        { where: { id_Coordenador }}
       );
-      res
-        .status(500)
-        .send("Erro ao inserir ou editar associação entre usuario e coordenador.");
+      res.redirect("/coordenador");
+    } else {
+      res.status(400).send("Ação inválida.");
     }
-  });
+  } catch (error) {
+    console.error(
+      "Erro ao inserir ou editar associação entre usuario e coordenador:",
+      error
+    );
+    res
+      .status(500)
+      .send("Erro ao inserir ou editar associação entre usuario e coordenador.");
+  }
+});
   
   app.post("/excluir_coordenador/:id", async (req, res) => {
     try {
       const id = req.params.id;
-      await Coordenador.destroy({ where: { idCoordenador: id } });
+      await Coordenador.destroy({ where: { id_Coordenador: id } });
       res.redirect("/coordenador");
     } catch (error) {
       console.error(
@@ -255,66 +255,89 @@ app.get("/coordenador", async (req, res) => {
 
 
   // ROTA PARA CRUD DE Responsavel Financeiro
-app.get("/responsavel_financeiro", async (req, res) => {
-  try {
-    const responsavel_financeiros = await Responsavel_financeiro.findAll();
-    const usuarios = await Usuario.findAll();
-    res.render("cad_responsavel_finenceiro", {
-      responsavel_financeiros,
-      usuarios,
-    });
-  } catch (error) {
-    console.error("Erro ao buscar associações de usuario a tabela de responsavel_financeiro:", error);
-    res.status(500).send("Erro ao buscar associações de usuario a tabela de responsavel_financeiro");
-  }
-});
-
-app.post("/editar_ResponsavelFinanceiro", async (req, res) => {
-  try {
-    const { usuario, action } = req.body;
-
-    if (action === "incluir") {
-      await Responsavel_financeiro.create({
-        Usuario_idUsuario: usuario,
+  app.get("/responsavel_financeiro", async (req, res) => {
+    try {
+      const usuarios = await Usuario.findAll();
+      const responsavel_financeiros = await Responsavel_financeiro.findAll();
+      const usuarioresponsavelfinanceiros = await UsuarioResponsavelFinanceiro.findAll();
+      res.render("cad_responsavel_finenceiro", {
+        responsavel_financeiros,
+        usuarioresponsavelfinanceiros : usuarioresponsavelfinanceiros,
+        usuarios,
       });
-      res.redirect("/responsavel_financeiro");
-    } else if (action === "alterar") {
-      const id_Resp_financeiro = req.body.id_responsavel_financeiro;
-      await Responsavel_financeiro.update(
-        { idUsuario: usuario },
-        { where: { id_responsavel_financeiro } }
-      );
-      res.redirect("/responsavel_financeiro");
-    } else {
-      res.status(400).send("Ação inválida.");
+    } catch (error) {
+      console.error("Erro ao buscar associações de usuario a tabela de cordenador:", error);
+      res.status(500).send("Erro ao buscar associações de usuario a tabela de cordenador");
     }
-  } catch (error) {
-    console.error(
-      "Erro ao inserir ou editar associação entre usuario e Responsavel Financeiro:",
-      error
-    );
-    res
-      .status(500)
-      .send("Erro ao inserir ou editar associação entre usuario e Responsavel Financeiro.");
-  }
-});
+  });
 
-app.post("/excluir_responsavel_financeiro/:id", async (req, res) => {
+  app.post("/editar_ResponsavelFinanceiro", async (req, res) => {
+    try {
+      const { usuario, action } = req.body;
+  
+      if (action === "incluir") {
+        await Responsavel_financeiro.create({
+          idUsuario: usuario,
+        });
+        res.redirect("/responsavel_financeiro");
+  
+      } else if (action === "alterar") {
+        const id_responsavel_financeiro = req.body.id_responsavel_financeiro;
+        await Responsavel_financeiro.update(
+          { idUsuario: usuario },
+          { where: { id_responsavel_financeiro }}
+        );
+        res.redirect("/responsavel_financeiro");
+      } else {
+        res.status(400).send("Ação inválida.");
+      }
+    } catch (error) {
+      console.error(
+        "Erro ao inserir ou editar associação entre usuario e Responsavel financeiro:",
+        error
+      );
+      res
+        .status(500)
+        .send("Erro ao inserir ou editar associação entre usuario e Responsavel financeiro.");
+    }
+  });
+    
+    app.post("/excluir_responsavelFinanceiro/:id", async (req, res) => {
+      try {
+        const id = req.params.id;
+        await Responsavel_financeiro.destroy({ where: { id_responsavel_financeiro: id } });
+        res.redirect("/responsavel_financeiro");
+      } catch (error) {
+        console.error(
+          "Erro ao excluir associação entre usuario e Responsavel financeiro:",
+          error
+        );
+        res
+          .status(500)
+          .send("Erro ao excluir associação entre usuario e Responsavel financeiro.");
+      }
+    });
+  
+
+ // ROTA PARA CRUD DE ALUNO
+ app.get("/aluno", async (req, res) => {
   try {
-    const id = req.params.id;
-    await Responsavel_financeiro.destroy({ where: { id_responsavel_financeiro: id } });
-    res.redirect("/responsavel_financeiro");
+    const usuarios = await Usuario.findAll();
+    const usuarioalunos = await UsuarioAluno.findAll();
+    const alunos = await Aluno.findAll({
+      raw: true,
+      order: [["id_aluno", "DESC"]],
+    });
+      res.render("cad_aluno", {
+        alunos,
+        usuarioalunos : usuarioalunos,
+        usuarios,
+      });
   } catch (error) {
-    console.error(
-      "Erro ao excluir associação entre usuario e responsavel_financeiro:",
-      error
-    );
-    res
-      .status(500)
-      .send("Erro ao excluir associação entre usuario e responsavel_financeiro.");
+    console.error("Erro ao buscar associações de usuario a tabela de aluno:", error);
+    res.status(500).send("Erro ao buscar associações de usuario a tabela de aluno");
   }
 });
-
 
 
 // ROTA PARA CRUD DISCIPLINA

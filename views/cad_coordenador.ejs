@@ -19,14 +19,13 @@
         </option>
         <% }); %>
       </select>
-      <br />
+      <br/>
 
-    
 
       <!-- Botões para confirmar a inclusão ou edição -->
       <button type="submit" name="action" value="alterar">Alterar</button>
       <button type="submit" name="action" value="incluir">Incluir</button>
-      <input type="hidden" id="idCoordenador" name="idCoordenador"/>
+      <input type="hidden" id="id_Coordenador" name="id_Coordenador"/>
     </form>
 
     <!-- Tabela para exibir as associações entre curso e disciplina -->
@@ -39,19 +38,19 @@
         </tr>
       </thead>
       <tbody>
-        <% usuarioCoordenadores.forEach(function(usuarioCoordenador) { %>
+        <% usuariocoordenadores.forEach(function(usuariocoordenador) { %>
         <tr>
-          <td><%= usuarioCoordenadores.nome_usuario %></td>
+          <td><%= usuariocoordenador.nome_usuario %></td>
           <td>
             <!-- Botão para editar associação -->
             <button
-              onclick="preencherFormulario('<%= usuarioCoordenador.nome_usuario %>',  '<%= usuarioCoordenador.idCoordenador %>')"
+              onclick="preencherFormulario('<%= usuariocoordenador.id_Coordenador %>', '<%= usuariocoordenador.idUsuario %>')"
             >
               Editar
             </button>
             <!-- Formulário para excluir associação -->
             <form
-              action="/excluir_coordenador/<%= usuarioCoordenador.idCoordenador %>"
+              action="/excluir_coordenador/<%= usuariocoordenador.id_Coordenador %>"
               method="POST"
             >
               <button type="submit">Excluir</button>
@@ -64,9 +63,12 @@
 
     <script>
       // Função para preencher os campos do formulário ao clicar em editar
-      function preencherFormulario(usuario,idCoordenador) {
-        document.getElementById("usuario").value = nome_usuario;
-        document.getElementById("idCoordenador").value = idCoordenador;
+      function preencherFormulario(
+        id_Coordenador,
+        usuario,
+      ) {
+        document.getElementById("id_Coordenador").value = id_Coordenador;
+        document.getElementById("usuario").value = usuario;
       }
     </script>
   </body>

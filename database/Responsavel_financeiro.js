@@ -11,7 +11,7 @@ Responsavel_financeiro.init(
             primaryKey: true,
             autoIncrement: true,
           },
-        Usuario_idUsuario: {
+        idUsuario: {
           type: DataTypes.INTEGER,
           allowNull: false,
           references:{

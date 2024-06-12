@@ -32,7 +32,7 @@ ProfessorDisciplina.init(
         sequelize,
         modelName: "ProfessorDisciplina",
         tableName: "professorDisciplina",
-        timestamps: true,
+        timestamps: false,
       }
     );
     
