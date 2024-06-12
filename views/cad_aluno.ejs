@@ -43,13 +43,14 @@
       </thead>
       <tbody>
         <%= usuarioalunos.forEach(function(usuarioaluno) { %>
+        <%= alunos.forEach(function(aluno) { %>
         <tr>
           <td><%= usuarioaluno.nome_usuario %></td>
-          <td><%= alunos.find(aluno => aluno.id_aluno === usuarioaluno.id_aluno)?.Alunocol% ></td>
+          <td><%= alunos.Alunocol></td>
           <td>
             <!-- Botão para editar associação -->
             <button
-              onclick="preencherFormulario('<%= usuarioaluno.id_aluno %>', '<%= usuarioaluno.idUsuario %>', '<%= alunos.find(aluno => aluno.id_aluno === usuarioaluno.id_aluno)?.Alunocol %>')"
+              onclick="preencherFormulario('<%= usuarioaluno.id_aluno %>', '<%= usuarioaluno.idUsuario %>', '<%= aluno.Alunocol%>')"
             >
               Editar
             </button>
