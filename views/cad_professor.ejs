@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRUD Professor</title>
+</head>
+<body>
+    <h1>CRUD de Professor</h1>
+
+    <!-- Formulário para adicionar ou editar associação entre usuario e Professor -->
+    <form action="/editar_Professor" method="POST">
+        <!-- Select para escolher o aluno -->
+        <label for="usuario">Usuário:</label>
+        <select id="usuario" name="usuario" required>
+            <% usuarios.forEach(function(usuario) { %>
+                <option value="<%= usuario.idUsuario %>" data-id="<%= usuario.idUsuario %>">
+                    <%= usuario.nome_usuario %>
+                </option>
+            <% }); %>
+        </select>
+        <br/>
+        <label for="titulo">Titulo:</label>
+        <input type="text" id="titulo" name="titulo" required>
+        <br/>
+
+        <!-- Botões para confirmar a inclusão ou edição -->
+        <button type="submit" name="action" value="alterar">Alterar</button>
+        <button type="submit" name="action" value="incluir">Incluir</button>
+        <input type="hidden" id="id_professor" name="id_professor"/>
+    </form>
+
+    <!-- Tabela para exibir as associações entre curso e disciplina -->
+    <h2>Associações entre Usuario e Professor</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Usuário</th>
+                <th>Título</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% usuarioprofessores.forEach(function(usuarioprofessor) { %>
+                <tr>
+                    <td><%= usuarioprofessor.nome_usuario %></td>
+                    <td><%= usuarioprofessor.titulo %></td>
+                    <td>
+                        <!-- Botão para editar associação -->
+                        <button
+                            onclick="preencherFormulario('<%= usuarioprofessor.id_professor %>', '<%= usuarioprofessor.idUsuario %>', '<%= usuarioprofessor.titulo %>')"
+                        >
+                            Editar
+                        </button>
+                        <!-- Formulário para excluir associação -->
+                        <form action="/excluir_professor/<%= usuarioprofessor.id_professor %>" method="POST">
+                            <button type="submit">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+
+    <script>
+        // Função para preencher os campos do formulário ao clicar em editar
+        function preencherFormulario(id_professor, usuario, email) {
+            document.getElementById("id_professor").value = id_professor;
+            document.getElementById("usuario").value = usuario;
+            document.getElementById("email").value = email;
+        }
+    </script>
+</body>
+</html>

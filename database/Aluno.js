@@ -11,9 +11,11 @@ Aluno.init(
           primaryKey: true,
           autoIncrement: true,
         },
-        Alunocol: {
+        email: {
           type: DataTypes.STRING(45),
           allowNull: false,
+          primaryKey: false,
+          autoIncrement: false,
         },
         idUsuario: {
           type: DataTypes.INTEGER,

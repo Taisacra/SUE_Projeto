@@ -1,21 +1,14 @@
 const { DataTypes, Model } = require("Sequelize");
 const sequelize = require("./Database"); // Arquivo de configuração da conexão com o banco de dados
 
-class ProfessorDisciplina extends Model {}
+class ProfessorDisciplinaVW extends Model {}
 
-ProfessorDisciplina.init(
+ProfessorDisciplinaVW.init(
     {
-        
-        id_professorDisciplina: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            primaryKey: true,
-            autoIncrement: true,
-          },
         id_professor: {
           type: DataTypes.INTEGER,
           allowNull: false,
-          primaryKey: false,
+          primaryKey: true,
           references:{
             model: "Professor",
             key: "idProfessor",
@@ -24,7 +17,7 @@ ProfessorDisciplina.init(
         id_disciplina: {
           type: DataTypes.INTEGER,
           allowNull: false,
-          primaryKey: false,
+          primaryKey: true,
           references:{
             model: "Disciplina",
             key: "id_disciplina",
@@ -33,15 +26,15 @@ ProfessorDisciplina.init(
     },
       {
         sequelize,
-        modelName: "ProfessorDisciplina",
-        tableName: "professordisciplina",
+        modelName: "ProfessorDisciplinaVW",
+        tableName: "professordisciplinaVW",
         timestamps: true,
       }
     );
     
-      async function sincronizarProfessorDisciplina() {
+      async function sincronizarProfessorDisciplinaVW() {
         try {
-          await ProfessorDisciplina.sync({ force: false });
+          await ProfessorDisciplinaVW.sync({ force: false });
         } catch (error) {
           console.error("Erro ao sincronizar a tabela: ", error);
         } finally {
@@ -50,5 +43,5 @@ ProfessorDisciplina.init(
         }
       }
       
-      ProfessorDisciplina.sync({ force: false }).then(() => {});
-      module.exports = ProfessorDisciplina;
+      ProfessorDisciplinaVW.sync({ force: false }).then(() => {});
+      module.exports = ProfessorDisciplinaVW;

@@ -5,24 +5,24 @@ class Curso extends Model {}
 
 Curso.init(
     {
-        id_curso: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            primaryKey: true,
-            autoIncrement: true,
-          },
-          nome: {
-            type: DataTypes.STRING(45),
-            allowNull: false,
-          },
-        coordenador_idCoordenador: {
-            type: DataTypes.INTEGER,
-              allowNull: false,
-              refereces: {
-                model:"Coordenador",
-                key:"idCoordenador",
-              },
+      id_curso: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      nome: {
+        ype: DataTypes.STRING(45),
+        allowNull: false,
+      },
+      id_Coordenador: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        refereces: {
+          model:"Coordenador",
+          key:"id_Coordenador",
         },
+      },
     },
       {
         sequelize,

@@ -5,7 +5,7 @@ class UsuarioProfessor extends Model {}
 
 UsuarioProfessor.init(
     {
-        id_Professor: {
+        id_professor: {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
@@ -18,16 +18,20 @@ UsuarioProfessor.init(
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
-          references:{
-            model: "Usuario",
-            key: "idUsuario",
+            references:{
+              model: "Usuario",
+              key: "idUsuario",
           },
         },
         nome_usuario: {
             type: DataTypes.STRING(45),
-             allowNull: false,
+            allowNull: false,
 
         },
+        titulo: {
+          type: DataTypes.STRING(45),
+          allowNull: false,
+        }
     },
       {
         sequelize,

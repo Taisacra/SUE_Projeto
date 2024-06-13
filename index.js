@@ -26,9 +26,9 @@ const UsuarioAluno = require("./database/UsuarioAluno");
 const UsuarioProfessor = require("./database/UsuarioProfessor");
 
 
-/* const ProfessorDisciplina = require("./database/ProfessorDisciplina");
+ const ProfessorDisciplina = require("./database/ProfessorDisciplina");
 
-ProfessorDisciplina.sincronizarProfessorDisciplina; */
+ProfessorDisciplina.sincronizarProfessorDisciplina; 
 
 
 /* Aluno.sincronizarAluno;
@@ -324,20 +324,128 @@ app.post("/editar_Coordenador", async (req, res) => {
   try {
     const usuarios = await Usuario.findAll();
     const usuarioalunos = await UsuarioAluno.findAll();
-    const alunos = await Aluno.findAll({
-      raw: true,
-      order: [["id_aluno", "DESC"]],
+    const alunos = await Aluno.findAll();
+    res.render("cad_aluno", {
+      alunos,
+      usuarioalunos : usuarioalunos,
+      usuarios,
     });
-      res.render("cad_aluno", {
-        alunos,
-        usuarioalunos : usuarioalunos,
-        usuarios,
-      });
   } catch (error) {
     console.error("Erro ao buscar associações de usuario a tabela de aluno:", error);
     res.status(500).send("Erro ao buscar associações de usuario a tabela de aluno");
   }
 });
+
+app.post("/editar_Aluno", async (req, res) => {
+  try {
+    const { usuario, email, action, id_aluno } = req.body;
+
+    console.log("Request body:", req.body); // Log para verificar os dados recebidos
+
+    if (action === "incluir") {
+      await Aluno.create({
+        idUsuario: usuario,
+        email: email,
+      });
+      console.log("Inclusão realizada com sucesso."); // Log de sucesso
+      res.redirect("/aluno");
+    } else if (action === "alterar") {
+      await Aluno.update(
+        { idUsuario: usuario, email: email },
+        { where: { id_aluno } }
+      );
+      console.log("Alteração realizada com sucesso."); // Log de sucesso
+      res.redirect("/aluno");
+    } else {
+      console.error("Ação inválida."); // Log de erro
+      res.status(400).send("Ação inválida.");
+    }
+  } catch (error) {
+    console.error("Erro ao inserir ou editar associação entre usuario e aluno:", error); // Log de erro detalhado
+    res.status(500).send("Erro ao inserir ou editar associação entre usuario e aluno.");
+  }
+});
+
+app.post("/excluir_aluno/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    await Aluno.destroy({ where: { id_aluno: id } });
+    res.redirect("/aluno");
+  } catch (error) {
+    console.error(
+      "Erro ao excluir associação entre usuario e aluno:",
+      error
+    );
+    res
+      .status(500)
+      .send("Erro ao excluir associação entre usuario e aluno.");
+  }
+});
+
+// ROTA PARA CRUD DE PROFESSOR
+app.get("/professor", async (req, res) => {
+  try {
+    const usuarios = await Usuario.findAll();
+    const usuarioprofessores = await UsuarioProfessor.findAll();
+    const professores = await Professor.findAll();
+    res.render("cad_professor", {
+      professores,
+      usuarioprofessores : usuarioprofessores,
+      usuarios,
+    });
+  } catch (error) {
+    console.error("Erro ao buscar associações de usuario a tabela de aluno:", error);
+    res.status(500).send("Erro ao buscar associações de usuario a tabela de aluno");
+  }
+});
+
+app.post("/editar_Professor", async (req, res) => {
+  try {
+    const { usuario, titulo, action, id_professor } = req.body;
+
+    console.log("Request body:", req.body); // Log para verificar os dados recebidos
+
+    if (action === "incluir") {
+      await Professor.create({
+        idUsuario: usuario,
+        titulo: titulo,
+      });
+      console.log("Inclusão realizada com sucesso."); // Log de sucesso
+      res.redirect("/professor");
+    } else if (action === "alterar") {
+      await Professor.update(
+        { idUsuario: usuario, titulo: titulo },
+        { where: { id_professor } }
+      );
+      console.log("Alteração realizada com sucesso."); // Log de sucesso
+      res.redirect("/professor");
+    } else {
+      console.error("Ação inválida."); // Log de erro
+      res.status(400).send("Ação inválida.");
+    }
+  } catch (error) {
+    console.error("Erro ao inserir ou editar associação entre usuario e professor:", error); // Log de erro detalhado
+    res.status(500).send("Erro ao inserir ou editar associação entre usuario e professor.");
+  }
+});
+
+app.post("/excluir_professor/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    await Professor.destroy({ where: { id_professor: id } });
+    res.redirect("/professor");
+  } catch (error) {
+    console.error(
+      "Erro ao excluir associação entre usuario e professor:",
+      error
+    );
+    res
+      .status(500)
+      .send("Erro ao excluir associação entre usuario e professor.");
+  }
+});
+
+
 
 
 // ROTA PARA CRUD DISCIPLINA

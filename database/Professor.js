@@ -5,17 +5,17 @@ class Professor extends Model {}
 
 Professor.init(
     {
-        idProfessor: {
+        id_professor: {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true,
         },
-        Titulo: {
+        titulo: {
             type: DataTypes.STRING(80),
             allowNull: false,
         },
-        Usuario_idUsuario: {
+        idUsuario: {
           type: DataTypes.INTEGER,
           allowNull: false,
           references:{
