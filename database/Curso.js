@@ -12,7 +12,7 @@ Curso.init(
         autoIncrement: true,
       },
       nome: {
-        ype: DataTypes.STRING(45),
+        type: DataTypes.STRING(45),
         allowNull: false,
       },
       id_Coordenador: {
@@ -28,7 +28,7 @@ Curso.init(
         sequelize,
         modelName: "Curso",
         tableName: "curso",
-        timestamps: true,
+        timestamps: false,
       }
     );
     
