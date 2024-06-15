@@ -77,7 +77,17 @@ select c.id_curso, c.nome, c.id_coordenador, uc.nome_usuario, uc.idUsuario from
 curso as c, usuariocoordenador as uc
 where c.id_coordenador = uc.id_coordenador 
 
-
+CREATE VIEW coordenadorcurso AS
+SELECT 
+    c.id_curso as id_curso,
+    c.nome as nome,
+    c.id_coordenador as id_coordenador,
+    uc.nome_usuario as nome_usuario,
+    uc.idUsuario as idUsuario
+FROM
+    curso AS c
+JOIN
+    usuariocoordenador AS uc ON c.id_coordenador = uc.id_coordenador;
 
 create view disciplinaProfessor As 
 select 
