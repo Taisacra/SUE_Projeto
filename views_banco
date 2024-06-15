@@ -55,19 +55,6 @@ CREATE VIEW usuarioProfessor AS
         u.idUsuario = p.idUsuario
 select * from usuarioProfessor
 
-CREATE VIEW cusroCoordenador AS
-SELECT 
-uc.nome_usuario as nome_usuario,
-uc.idUsuario as idUsuario,
-cod.id_Cordenador As id_Cordenador, 
-c.id_curso as id_curso,
-c. nome as nome
-from
-usuariocoordenador as uc,
-coordenador as cod,
-curso as c 
-where
-uc.id_Coordenador = cod.id_Cordenador and c.id_curso = cod.id_Cordenador;
 
 CREATE VIEW disciplina_curso AS
     SELECT 
@@ -84,22 +71,11 @@ CREATE VIEW disciplina_curso AS
             AND d.id_disciplina = dc.id_disciplina;
 SELECT * FROM disciplina_curso;
 
-create view curso_coordenador AS
-select 
-cc.id_curso_coordenador as id_curso_coordenador,
-c.id_curso as id_curso,
-c.nome AS nome,
-uc.id_Coordenador as id_Coordenador,
-uc.nome_usuario as nome_usuario
-from
-cursoCoordenador as cc,
-curso as c,
-usuariocoordenador as uc
-where
-cc.id_curso_coordenador = c.id_curso and cc.id_curso_coordenador = uc.id_Coordenadorcursocoordenador
- 
 
-
+create view coordenadorcurso as 
+select c.id_curso, c.nome, c.id_coordenador, uc.nome_usuario, uc.idUsuario from 
+curso as c, usuariocoordenador as uc
+where c.id_coordenador = uc.id_coordenador 
 
 
 
