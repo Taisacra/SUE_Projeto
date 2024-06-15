@@ -25,6 +25,7 @@ const UsuarioResponsavelFinanceiro = require("./database/UsuarioResponsavelFinan
 const UsuarioAluno = require("./database/UsuarioAluno");
 const UsuarioProfessor = require("./database/UsuarioProfessor");
 const CursoCoordenador = require("./database/CursoCoordenador");
+//const CursoCoordenador = require("./database/CursoCoordenador");
 
 CursoCoordenador.sincronizarCursoCoordenador;
 
@@ -562,10 +563,12 @@ app.post("/excluir_disciplina/:id", async (req, res) => {
 app.get("/curso", async (req, res) => {
   try {
     const cursos = await Curso.findAll();
-    const coordenadores = await Coordenador.findAll();
+    const usuariocoordenadores = await UsuarioCoordenador.findAll();
+    const cursocoordenador = await CursoCoordenador.findAll();
     res.render("cad_curso", {
       cursos,
-      coordenadores,
+      usuariocoordenadores,
+      cursocoordenador: cursocoordenador,
     });
   } catch (error) {
     console.error("Erro ao buscar associações de coordenador a tabela de curso:", error);

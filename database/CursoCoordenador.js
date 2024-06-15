@@ -2,6 +2,7 @@ const { DataTypes, Model } = require("Sequelize");
 const sequelize = require("./Database"); // Arquivo de configuração da conexão com o banco de dados
 
 const UsuarioCoordenador = require("./UsuarioCoordenador");
+const Curso = require("./Curso");
 
 class CursoCoordenador extends Model {}
 
@@ -28,14 +29,6 @@ CursoCoordenador.init(
               key:"id_Coordenador",
             },
           },
-          idUsuario: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            refereces: {
-              model:"UsuarioCoordenador",
-              key:"idUsuario",
-            },
-          },
           nome_usuario: {
             type: DataTypes.STRING(45),
             allowNull: false,
@@ -44,6 +37,15 @@ CursoCoordenador.init(
                 key:"id_Coordenador",
             },
           },   
+          idUsuario: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            refereces: {
+              model:"UsuarioCoordenador",
+              key:"idUsuario",
+            },
+          },
+          
     },
       {
         sequelize,
