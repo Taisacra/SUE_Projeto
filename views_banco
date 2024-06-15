@@ -1,0 +1,125 @@
+create database sueProjeto
+use sueProjeto;
+
+  
+CREATE VIEW usuariocoordenador AS
+    SELECT 
+        u.nome_usuario AS nome_usuario,
+        u.idUsuario AS idUsuario,
+        c.id_Coordenador AS id_Coordenador
+    FROM
+        usuario AS u,
+        coordenador AS c
+    WHERE
+        u.idUsuario = c.idUsuario; 
+
+select * from usuarioCoordenador 
+
+CREATE VIEW usuarioResponsavelFinanceiro AS
+    SELECT 
+        u.nome_usuario As nome_usuario,
+        u.idUsuario AS idUsuario,
+        rf.id_responsavel_financeiro As id_responsavel_financeiro
+    FROM
+        usuario AS u,
+        responsavel_financeiro AS rf
+    WHERE
+        u.idUsuario = rf.idUsuario
+select * from usuarioResponsavelFinanceiro 
+
+
+CREATE VIEW usuarioAluno AS
+    SELECT 
+        u.nome_usuario AS nome_usuario,
+        u.idUsuario AS idUsuario,
+        a.id_aluno AS id_aluno,
+        a.email AS email
+    FROM
+        usuario AS u,
+        aluno AS a
+    WHERE
+        u.idUsuario = a.idUsuario
+select * from usuarioAluno
+
+
+CREATE VIEW usuarioProfessor AS
+    SELECT 
+		u.nome_usuario As nome_usuario,
+        u.idUsuario AS idUsuario,
+        p.id_professor AS id_professor,
+        p.titulo AS titulo
+    FROM
+        usuario AS u,
+        professor AS p
+    WHERE
+        u.idUsuario = p.idUsuario
+select * from usuarioProfessor
+
+CREATE VIEW cusroCoordenador AS
+SELECT 
+uc.nome_usuario as nome_usuario,
+uc.idUsuario as idUsuario,
+cod.id_Cordenador As id_Cordenador, 
+c.id_curso as id_curso,
+c. nome as nome
+from
+usuariocoordenador as uc,
+coordenador as cod,
+curso as c 
+where
+uc.id_Coordenador = cod.id_Cordenador and c.id_curso = cod.id_Cordenador;
+
+CREATE VIEW disciplina_curso AS
+    SELECT 
+        dc.id_curso AS id_curso,
+        c.nome AS nome,
+        dc.id_disciplina AS id_disciplina,
+        d.nome_disciplina AS nome_disciplina
+    FROM
+        curso AS c,
+        disciplina AS d,
+        disciplinaCurso AS dc
+    WHERE
+        c.id_curso = dc.id_curso
+            AND d.id_disciplina = dc.id_disciplina;
+SELECT * FROM disciplina_curso;
+
+create view curso_coordenador AS
+select 
+cc.id_curso_coordenador as id_curso_coordenador,
+c.id_curso as id_curso,
+c.nome AS nome,
+uc.id_Coordenador as id_Coordenador,
+uc.nome_usuario as nome_usuario
+from
+cursoCoordenador as cc,
+curso as c,
+usuariocoordenador as uc
+where
+cc.id_curso_coordenador = c.id_curso and cc.id_curso_coordenador = uc.id_Coordenadorcursocoordenador
+ 
+
+
+
+
+
+create view disciplinaProfessor As 
+select 
+pd.id_professor 
+pd.id_disciplina
+
+p.nome_usuario 
+
+d.nome_disciplina 
+from 
+professor AS p
+disciplina As d
+professordisciplina as pd
+where 
+p.idProfessor = pd.id_professor and d.id_disciplina = pd.id_disciplina
+
+
+
+
+
+

@@ -7,7 +7,7 @@ class CursoCoordenador extends Model {}
 
 CursoCoordenador.init(
     {
-        id_curso_coordenador: {
+        id_curso: {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
@@ -28,19 +28,27 @@ CursoCoordenador.init(
               key:"id_Coordenador",
             },
           },
-            nome_usuario: {
+          idUsuario: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            refereces: {
+              model:"UsuarioCoordenador",
+              key:"idUsuario",
+            },
+          },
+          nome_usuario: {
             type: DataTypes.STRING(45),
             allowNull: false,
             refereces: {
                 model:"UsuarioCoordenador",
                 key:"id_Coordenador",
             },
-            },
+          },   
     },
       {
         sequelize,
         modelName: "CursoCoordenador",
-        tableName: "cursoCoordenador",
+        tableName: "cursocoordenador",
         timestamps: false,
       }
     );
