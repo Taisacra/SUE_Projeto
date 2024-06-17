@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3001;
+const port = 3002;
 const connection = require("./database/Database");
 const bodyParser = require("body-parser");
 
@@ -24,15 +24,15 @@ const UsuarioCoordenador = require("./database/UsuarioCoordenador");
 const UsuarioResponsavelFinanceiro = require("./database/UsuarioResponsavelFinanceiro");
 const UsuarioAluno = require("./database/UsuarioAluno");
 const UsuarioProfessor = require("./database/UsuarioProfessor");
-const CursoCoordenador = require("./database/CursoCoordenador");
-//const CursoCoordenador = require("./database/CursoCoordenador");
+const CoordenadorCurso = require("./database/CoordenadorCurso");
 
-CursoCoordenador.sincronizarCursoCoordenador;
 
- const ProfessorDisciplina = require("./database/ProfessorDisciplina");
+CoordenadorCurso.sincronizarCoordenadorCurso;
+
+ /* const ProfessorDisciplina = require("./database/ProfessorDisciplina");
 
 ProfessorDisciplina.sincronizarProfessorDisciplina; 
-
+ */
 
 /* Aluno.sincronizarAluno;
 Usuario.sincronizarUsuario; 
@@ -564,11 +564,11 @@ app.get("/curso", async (req, res) => {
   try {
     const cursos = await Curso.findAll();
     const usuariocoordenadores = await UsuarioCoordenador.findAll();
-    const cursocoordenador = await CursoCoordenador.findAll();
+    const coordenadorcursos = await CoordenadorCurso.findAll();
     res.render("cad_curso", {
       cursos,
-      usuariocoordenadores,
-      cursocoordenador: cursocoordenador,
+      usuariocoordenadores: usuariocoordenadores,
+      coordenadorcursos: coordenadorcursos,
     });
   } catch (error) {
     console.error("Erro ao buscar associações de coordenador a tabela de curso:", error);
@@ -580,22 +580,30 @@ app.get("/curso", async (req, res) => {
 // Rota para inserir ou editar um curso
 app.post("/editar_curso", async (req, res) => {
   try {
-    const {coordenador, action } = req.body;
+    const { coordenador, nome, action, id_curso } = req.body;
 
     if (action === "incluir") {
-      await Curso.create({ nome, coordenador });
+      await Curso.create({
+        id_Coordenador: coordenador,
+        nome: nome,
+      });
     } else if (action === "alterar") {
-      const id_curso = req.body.id_curso;
-      await Curso.update({ nome, coordenador }, { where: { id_curso } });
+      await Curso.update(
+        { id_Coordenador: coordenador, nome: nome },
+        { where: { id_curso: id_curso } }
+      );
     } else {
-      res.status(400).send("Ação inválida.");
+      return res.status(400).send("Ação inválida.");
     }
+
     res.redirect("/curso");
   } catch (error) {
     console.error("Erro ao inserir ou editar curso:", error);
     res.status(500).send("Erro ao inserir ou editar curso.");
   }
 });
+
+
 
 // Rota para excluir um curso
 app.post("/excluir_curso/:id", async (req, res) => {
