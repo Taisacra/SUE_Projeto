@@ -756,19 +756,19 @@ app.get("/turma_disciplina", async (req, res) => {
 
 app.post("/editar_turma_disciplina", async (req, res) => {
   try {
-    const { turma, disciplina, nome_disciplina, action } = req.body;
+    const { turma,disciplina, nome_disciplina, action } = req.body;
 
     if (action === "incluir") {
       await TurmaDisciplina.create({
         id_Turma: turma,
-        //id_disciplina: disciplina,
+        id_disciplina: disciplina,
         nome_disciplina: nome_disciplina,
       });
       res.redirect("/turma_disciplina");
     } else if (action === "alterar") {
       const id_TurmaDisciplina = req.body.id_TurmaDisciplina;
-      await DisciplinaCurso.update(
-        { id_Turma: turma, /* id_disciplina: disciplina, */ nome_disciplina: nome_disciplina },
+      await TurmaDisciplina.update(
+        { id_Turma: turma, id_disciplina: disciplina, nome_disciplina: nome_disciplina },
         { where: { id_TurmaDisciplina } }
       );
       res.redirect("/disciplina_curso");

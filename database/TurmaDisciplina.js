@@ -19,7 +19,7 @@ TurmaDisciplina.init(
               key:"id_Turma",
             },
           },
-          id_Disciplina: {
+          id_disciplina: {
             type: DataTypes.INTEGER,
             allowNull: false,
             refereces: {
