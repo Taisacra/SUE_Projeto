@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRUD Curso</title>
+  </head>
+  <body>
+    <h1>CRUD de Turma</h1>
+
+    <!-- Formulário para adicionar ou editar associação entre curso e disciplina -->
+    <form action="/editar_turma" method="POST">
+      <!-- Select para escolher o coordenador -->
+      <label for="curso">Curso:</label>
+      <select id="curso" name="curso" required>
+        <% cursos.forEach(function(curso) { %>
+        <option value="<%= curso.id_curso %>" data-id="<%= curso.id_curso %>">
+          <%= curso.nome %>
+        </option>
+        <% }); %>
+      </select>
+      <br />
+
+      <!-- Campo para o turno -->
+      <label for="turno">Turno:</label>
+      <input type="text" id="turno" name="turno" required />
+      <br />
+
+      <!-- Botões para confirmar a inclusão ou edição -->
+      <button type="submit" name="action" value="alterar">Alterar</button>
+      <button type="submit" name="action" value="incluir">Incluir</button>
+      <input type="hidden" id="id_Turma" name="id_Turma"/>
+    </form>
+
+    <!-- Tabela para exibir as associações entre curso e coordenador -->
+    <h2>Associações entre Turma e Curso </h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Curso</th>
+          <th>Turno</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% turmacursos.forEach(function(turmacurso) { %>
+        <tr>
+          <td><%= turmacurso.nome %></td>
+          <td><%= turmacurso.turno %></td>
+          <td>
+            <!-- Botão para editar associação -->
+            <button onclick="preencherFormulario('<%= turmacurso.id_Turma %>', '<%= turmacurso.id_curso %>', '<%= turmacurso.turno %>')">Editar</button>
+            <!-- Formulário para excluir associação -->
+            <form action="/excluir_turma/<%= turmacurso.id_Turma%>" method="POST">
+              <button type="submit">Excluir</button>
+            </form>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <script>
+      function preencherFormulario(id_Turma, curso, turno) {
+        document.getElementById("id_Turma").value = id_Turma;
+        document.getElementById("curso").value = curso;
+        document.getElementById("turno").value = turno;
+      }
+    </script>
+  </body>
+</html>

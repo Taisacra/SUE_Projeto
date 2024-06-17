@@ -18,16 +18,18 @@ const Curso = require("./database/Curso");
 const Disciplina = require("./database/Disciplina");
 const DisciplinaCurso = require("./database/DisciplinaCurso");
 const Turma = require("./database/Turma");
-const TurmaAluno = require("./database/TurmaAluno");
-const TurmaDisciplina = require("./database/TurmaDisciplina");
 const UsuarioCoordenador = require("./database/UsuarioCoordenador");
 const UsuarioResponsavelFinanceiro = require("./database/UsuarioResponsavelFinanceiro");
 const UsuarioAluno = require("./database/UsuarioAluno");
 const UsuarioProfessor = require("./database/UsuarioProfessor");
 const CoordenadorCurso = require("./database/CoordenadorCurso");
+const TurmaCurso = require("./database/TurmaCurso");
+const TurmaDisciplina = require("./database/TurmaDisciplina");
+
+const TurmaAluno = require("./database/TurmaAluno");
 
 
-CoordenadorCurso.sincronizarCoordenadorCurso;
+
 
  /* const ProfessorDisciplina = require("./database/ProfessorDisciplina");
 
@@ -49,6 +51,8 @@ UsuarioCoordenador.sincronizarUsuarioCoordenador;
 UsuarioResponsavelFinanceiro.sincronizarUsuarioResponsavelFinanceiro;
 UsuarioAluno.sincronizarUsuarioAluno;
 UsuarioProfessor.sincronizarUsuarioProfessor;
+TurmaCurso.sincronizarTurmaCurso;
+CoordenadorCurso.sincronizarCoordenadorCurso;
 */
 
 
@@ -532,9 +536,7 @@ app.post("/editar_disciplina", async (req, res) => {
   }
 });
 
-
 // Rota para excluir dados da tabela
-// ESTA FUNCIONA. iNCLUIR Mensagem de operação BEM SUCEDIDA.
 app.post("/excluir_disciplina/:id", async (req, res) => {
   try {
     const id = req.params.id;
@@ -576,7 +578,6 @@ app.get("/curso", async (req, res) => {
   }
 });
 
-
 // Rota para inserir ou editar um curso
 app.post("/editar_curso", async (req, res) => {
   try {
@@ -602,8 +603,6 @@ app.post("/editar_curso", async (req, res) => {
     res.status(500).send("Erro ao inserir ou editar curso.");
   }
 });
-
-
 
 // Rota para excluir um curso
 app.post("/excluir_curso/:id", async (req, res) => {
@@ -683,6 +682,124 @@ app.post("/excluir_disciplina_curso/:id", async (req, res) => {
     res
       .status(500)
       .send("Erro ao excluir associação entre disciplina e curso.");
+  }
+});
+
+//ROTA PARA CRUD DE TURMA
+app.get("/turma", async (req, res) => {
+  try {
+    const turmacursos = await TurmaCurso.findAll();
+    const cursos = await Curso.findAll();
+    res.render("cad_turma", {
+      turmacursos: turmacursos,
+      cursos: cursos,
+    });
+  } catch (error) {
+    console.error("Erro ao buscar associações de Turma e curso:", error);
+    res.status(500).send("Erro ao buscar associações de Turma e curso");
+  }
+});
+
+app.post("/editar_turma", async (req, res) => {
+  try {
+    const { curso, turno, action, id_Turma } = req.body;
+
+    if (action === "incluir") {
+      await Turma.create({
+        id_Curso: curso,
+        turno: turno,
+      });
+    } else if (action === "alterar") {
+      await Curso.update(
+        { id_Curso: curso, turno: turno },
+        { where: { id_Turma: id_Turma } }
+      );
+    } else {
+      return res.status(400).send("Ação inválida.");
+    }
+
+    res.redirect("/turma");
+  } catch (error) {
+    console.error("Erro ao inserir ou editar turma:", error);
+    res.status(500).send("Erro ao inserir ou editar turma.");
+  }
+});
+
+// Rota para excluir um turma
+app.post("/excluir_turma/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    await Turma .destroy({ where: { id_turma: id } });
+    res.redirect("/turma");
+  } catch (error) {
+    console.error("Erro ao excluir turma:", error);
+    res.status(500).send("Erro ao excluir turma.");
+  }
+});
+
+// ROTA PARA CRUD TURMA_DISCIPLINA
+app.get("/turma_disciplina", async (req, res) => {
+  try {
+    const turmas = await Turma.findAll();
+    const disciplinas = await Disciplina.findAll();
+    const turma_disciplinas = await TurmaDisciplina.findAll();
+    res.render("cad_turma_disciplina", {
+      turma_disciplinas,
+      turmas,
+      disciplinas,
+    });
+  } catch (error) {
+    console.error("Erro ao buscar associações de turmas e disciplinas :", error);
+    res.status(500).send("Erro ao buscar associações de turmas e disciplinas.");
+  }
+});
+
+app.post("/editar_turma_disciplina", async (req, res) => {
+  try {
+    const { turma, disciplina, nome_disciplina, action } = req.body;
+
+    if (action === "incluir") {
+      await TurmaDisciplina.create({
+        id_Turma: turma,
+        //id_disciplina: disciplina,
+        nome_disciplina: nome_disciplina,
+      });
+      res.redirect("/turma_disciplina");
+    } else if (action === "alterar") {
+      const id_TurmaDisciplina = req.body.id_TurmaDisciplina;
+      await DisciplinaCurso.update(
+        { id_Turma: turma, /* id_disciplina: disciplina, */ nome_disciplina: nome_disciplina },
+        { where: { id_TurmaDisciplina } }
+      );
+      res.redirect("/disciplina_curso");
+    } else {
+      res.status(400).send("Ação inválida.");
+    }
+  } catch (error) {
+    console.error(
+      "Erro ao inserir ou editar associação entre turma e disciplina:",
+      error
+    );
+    res
+      .status(500)
+      .send("Erro ao inserir ou editar associação entre turma e disciplina.");
+  }
+});
+
+// Rota para excluir uma associação entre disciplina e curso
+app.post("/excluir_turma_disciplina/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    await TurmaDisciplina.destroy({ where: { id_TurmaDisciplina: id } });
+    res.redirect("/turma_disciplina");
+  } catch (error) {
+    console.error(
+      "Erro ao excluir associação entre turma e disciplina:",
+      error
+    );
+    res
+      .status(500)
+      .send("Erro ao excluir associação entre turma e disciplina.");
   }
 });
 

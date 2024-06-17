@@ -72,11 +72,11 @@ CREATE VIEW disciplina_curso AS
 SELECT * FROM disciplina_curso;
 
 
-create view coordenadorcurso as 
+/* create view coordenadorcurso as 
 select c.id_curso, c.nome, c.id_coordenador, uc.nome_usuario, uc.idUsuario from 
 curso as c, usuariocoordenador as uc
 where c.id_coordenador = uc.id_coordenador 
-
+ */
 CREATE VIEW coordenadorcurso AS
 SELECT 
     c.id_curso as id_curso,
@@ -89,23 +89,28 @@ FROM
 JOIN
     usuariocoordenador AS uc ON c.id_coordenador = uc.id_coordenador;
 
-create view disciplinaProfessor As 
+CREATE VIEW turmacurso AS
+    SELECT 
+        t.id_Turma AS id_Turma,
+        t.turno AS turno,
+        t.id_Curso AS id_Curso,
+        c.nome AS nome
+    FROM
+        turma AS t
+            JOIN
+        curso AS c ON t.id_Curso = c.id_curso;
+
+
+create view turma_disciplina as 
 select 
-pd.id_professor 
-pd.id_disciplina
-
-p.nome_usuario 
-
-d.nome_disciplina 
+td.id_Turma as id_Turma,
+td.id_disciplina as id_disciplina,
+d.nome_disciplina as nome_disciplina
 from 
-professor AS p
-disciplina As d
-professordisciplina as pd
-where 
-p.idProfessor = pd.id_professor and d.id_disciplina = pd.id_disciplina
-
-
-
-
+disciplina as d,
+turmaDisciplina as td,
+turma as t
+where t.id_Turma = td.id_Turma and d.id_disciplina = td.id_disciplina
+select * from turma_disciplina
 
 

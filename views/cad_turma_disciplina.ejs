@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRUD Turma-Disciplina</title>
+  </head>
+  <body>
+    <h1>CRUD de Turma-Disciplina</h1>
+
+    <!-- Formulário para adicionar ou editar associação entre curso e disciplina -->
+    <form action="/editar_turma_disciplina" method="POST">
+      <!-- Select para escolher o curso -->
+      <label for="turma">Turma:</label>
+      <select id="turma" name="turma" required>
+        <% turmas.forEach(function(turma) { %>
+        <option value="<%= turma.id_Turma %>" data-id="<%= turma.id_Turma %>">
+          <%= turma.id_Turma %>
+        </option>
+        <% }); %>
+      </select>
+      <br />
+
+      <!-- Select para escolher a disciplina -->
+      <label for="disciplina">Disciplina:</label>
+      <select id="disciplina" name="disciplina" required>
+        <% disciplinas.forEach(function(disciplina) { %>
+        <option value="<%= disciplina.id_disciplina %>"
+          data-id="<%= disciplina.id_disciplina %>"
+        >
+          <%= disciplina.nome_disciplina %>
+        </option>
+        <% }); %>
+      </select>
+      <br />
+
+      <!-- Botões para confirmar a inclusão ou edição -->
+      <button type="submit" name="action" value="alterar">Alterar</button>
+      <button type="submit" name="action" value="incluir">Incluir</button>
+      <input type="hidden" id="id_TurmaDisciplina" name="id_TurmaDisciplina"/>
+    </form>
+
+    <!-- Tabela para exibir as associações entre curso e disciplina -->
+    <h2>Associações entre Turma e Disciplina</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Turma</th>
+          <th>Disciplina</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% turma_disciplinas.forEach(function(turma_disciplina) { %>
+        <tr>
+          <td><%= turma_disciplina.id_Turma %></td>
+          <td><%= turma_disciplina.nome_disciplina %></td>
+          <td>
+            <!-- Botão para editar associação -->
+            <button
+              onclick="preencherFormulario('<%= turma_disciplina.id_Turma %>', '<%= turma_disciplina.id_disciplina %>', '<%= turma_disciplina.id_TurmaDisciplina %>')"
+            >
+              Editar
+            </button>
+            <!-- Formulário para excluir associação -->
+            <form
+              action="/excluir_turma_disciplina/<%= turma_disciplina.id_TurmaDisciplina %>"
+              method="POST"
+            >
+              <button type="submit">Excluir</button>
+            </form>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <script>
+      // Função para preencher os campos do formulário ao clicar em editar
+      function preencherFormulario(turma, nome_disciplina, turma_nome_disciplina) {
+        document.getElementById("turma").value = turma;
+        document.getElementById("nome_disciplina").value = nome_disciplina;
+        document.getElementById("turma_disciplina").value = turma_disciplina;
+      }
+    </script>
+  </body>
+</html>
