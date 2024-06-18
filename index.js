@@ -17,7 +17,7 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set("view engine", "ejs");
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3002;
 
 const Usuario = require("./database/Usuario");
 const Aluno = require("./database/Aluno");
@@ -27,16 +27,15 @@ const Responsavel_financeiro = require("./database/Responsavel_financeiro");
 const Coordenador = require("./database/Coordenador");
 const Curso = require("./database/Curso");
 const Disciplina = require("./database/Disciplina");
-const DisciplinaCurso = require("./database/DisciplinaCurso");
+//const DisciplinaCurso = require("./database/DisciplinaCurso");
 const Turma = require("./database/Turma");
 const UsuarioCoordenador = require("./database/UsuarioCoordenador");
-const UsuarioResponsavelFinanceiro = require("./database/UsuarioResponsavelFinanceiro");
-const UsuarioAluno = require("./database/UsuarioAluno");
-const UsuarioProfessor = require("./database/UsuarioProfessor");
+//const UsuarioResponsavelFinanceiro = require("./database/UsuarioResponsavelFinanceiro");
+//const UsuarioAluno = require("./database/UsuarioAluno");
+//const UsuarioProfessor = require("./database/UsuarioProfessor");
 const CoordenadorCurso = require("./database/CoordenadorCurso");
 const TurmaCurso = require("./database/TurmaCurso");
-const TurmaDisciplina = require("./database/TurmaDisciplina");
-
+//const TurmaDisciplina = require("./database/TurmaDisciplina");
 const TurmaAluno = require("./database/TurmaAluno");
 
 
@@ -629,7 +628,7 @@ app.post("/excluir_curso/:id", async (req, res) => {
 
 
 
-// ROTA PARA CRUD DISCIPLINA_CURSO
+/* // ROTA PARA CRUD DISCIPLINA_CURSO
 // Rota para inserir ou editar uma associação entre disciplina e curso
 app.get("/disciplina_curso", async (req, res) => {
   try {
@@ -694,7 +693,7 @@ app.post("/excluir_disciplina_curso/:id", async (req, res) => {
       .status(500)
       .send("Erro ao excluir associação entre disciplina e curso.");
   }
-});
+}); */
 
 //ROTA PARA CRUD DE TURMA
 app.get("/turma", async (req, res) => {
@@ -749,7 +748,7 @@ app.post("/excluir_turma/:id", async (req, res) => {
 });
 
 // ROTA PARA CRUD TURMA_DISCIPLINA
-app.get("/turma_disciplina", async (req, res) => {
+/* app.get("/turma_disciplina", async (req, res) => {
   try {
     const turmas = await Turma.findAll();
     const disciplinas = await Disciplina.findAll();
@@ -813,7 +812,7 @@ app.post("/excluir_turma_disciplina/:id", async (req, res) => {
       .send("Erro ao excluir associação entre turma e disciplina.");
   }
 });
-
+ */
 
 
 

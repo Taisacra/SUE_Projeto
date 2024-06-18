@@ -1,4 +1,4 @@
-// Importa a biblioteca sequelize
+/* // Importa a biblioteca sequelize
 const Sequelize = require("Sequelize");
 const { isModuleNamespaceObject } = require("util/types");
 
@@ -10,14 +10,14 @@ const connection = new Sequelize("sueProjeto", "root", "",{
 });
 
 // Exportando o modúlo para fica visível em outro programa (possa chamar essa conexão)
-module.exports = connection; 
+module.exports = connection;  */
 
 
 //MODIFIÇÃO PASSADO PELO PROFESSOR
 
 // Importando a biblioteca sequelize
 //const Sequelize = require("sequelize");
-const { Sequelize } = require("sequelize");
+const { Sequelize } = require("Sequelize");
 
 //Criando uma instância do Sequelize
 // Esta instância é uma conexão com o banco MYSQL

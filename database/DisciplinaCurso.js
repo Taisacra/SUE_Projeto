@@ -1,6 +1,9 @@
 const { DataTypes, Model } = require("Sequelize");
 const sequelize = require("./Database"); // Arquivo de configuração da conexão com o banco de dados
 
+/* const Disciplina = require("./Disciplina");
+const Curso = require("./Curso"); */
+
 class DisciplinaCurso extends Model {}
 
 DisciplinaCurso.init(

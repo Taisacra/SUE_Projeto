@@ -1,6 +1,8 @@
 const { DataTypes, Model } = require("Sequelize");
 const sequelize = require("./Database"); // Arquivo de configuração da conexão com o banco de dados
 
+//const Usuario =require("./Usuario");
+
 class Responsavel_financeiro extends Model {}
 
 Responsavel_financeiro.init(
