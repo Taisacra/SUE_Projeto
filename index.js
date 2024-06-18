@@ -1,12 +1,14 @@
+require("dotenv").config({ path: "./.env" }); //instalr o dotenv: npm install dotenv --save 
 const express = require('express');
 const app = express();
-const port = 3002;
+//const port = 3002;
 const connection = require("./database/Database");
 const bodyParser = require("body-parser");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set("view engine", "ejs");
+const port = process.env.PORT || 4000;
 
 const Usuario = require("./database/Usuario");
 const Aluno = require("./database/Aluno");
