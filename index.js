@@ -40,7 +40,7 @@ const TurmaAluno = require("./database/TurmaAluno");
 
 
 
-
+/* const ProfessorDisciplina = require("./database/ProfessorDisciplina");
  /* const ProfessorDisciplina = require("./database/ProfessorDisciplina");
 
 ProfessorDisciplina.sincronizarProfessorDisciplina; 
