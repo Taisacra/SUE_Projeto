@@ -266,7 +266,7 @@ app.post("/editar_Coordenador", async (req, res) => {
       );
       res
         .status(500)
-        .send("Erro ao excluir associação entre usuario e coordenador.");
+        .send("Erro ao excluir associação entre usuario e coordenador."):
     }
   });
 
