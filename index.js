@@ -155,7 +155,7 @@ app.get("/usuario", (req, res) => {
             error: `Usuario NÃO FOI encontrada - NA TABELA DE Usuario - ID: ${id}.`,
           });
         }
-        usuario. nome_usuario = nome_usuario;
+        usuario.nome_usuario = nome_usuario;
         usuario.cpf = cpf;
         usuario.telefone = telefone;
         usuario.data_nascimento = data_nascimento;
